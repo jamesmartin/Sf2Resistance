@@ -9,13 +9,30 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
+  ListView,
   View
 } from 'react-native';
 
 export default class Sf2Resistance extends Component {
+  constructor(props) {
+    super(props);
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.state = {
+      dataSource: ds.cloneWithRows([
+        'Foo', 'Bar', 'Baz', 'Quux'
+      ])
+    };
+  }
+
   render() {
     return (
       <View style={styles.container}>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={(rowData) => <Text>{rowData}</Text>}
+        />
+      </View>
+      /**<View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
@@ -27,6 +44,7 @@ export default class Sf2Resistance extends Component {
           Cmd+D or shake for dev menu
         </Text>
       </View>
+      **/
     );
   }
 }
@@ -34,6 +52,7 @@ export default class Sf2Resistance extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 22,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
