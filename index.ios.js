@@ -32,6 +32,8 @@ export default class Sf2Resistance extends Component {
           renderRow={(rowData) => <Text>{rowData}</Text>}
         />
       </View>
+      // show events from http://www.politicaleventscalendar.org/pec/index.cfm
+      
       /**<View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native!
