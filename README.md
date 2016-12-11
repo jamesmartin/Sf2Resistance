@@ -2,13 +2,16 @@
 
 ## Installation
 
-Currently we're pulling event information from Meetup. You'll need to add your
-API key to `env.js`:
+We pull events from [findthefight.org](http://findthefight.org). Add the URL of
+the events host to the `env.js` file:
 
 ```
 cp env.js.example env.js
-# Edit env.js and add your meetup API key to the `meetupApikey` property
+# Edit env.js and add the events host URL to the `eventsHostUrl` property
 ```
+
+If you want to run the events host locally, check out [its
+repo](https://github.com/sdhull/find_the_fight).
 
 ```
 npm install
