@@ -77,7 +77,7 @@ class Row extends React.Component {
       <TouchableWithoutFeedback onPress={this._onClick} >
         <View style={styles.row}>
           <Text style={styles.text}>
-            {this.props.data}
+            {this.props.data.name}
           </Text>
         </View>
       </TouchableWithoutFeedback>
@@ -171,7 +171,7 @@ export default class Sf2Resistance extends Component {
           return []
         } else {
           return (json.events || []).reduce((all, event) => {
-            all.push(event.name)
+            all.push({name: event.name})
             return all
           }, [])
         }
