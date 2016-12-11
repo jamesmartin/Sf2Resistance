@@ -8,6 +8,7 @@ import {
   AppRegistry,
   Button,
   ListView,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,12 +19,15 @@ import {
 const Environment = require('./environment.js')
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 22,
+  },
   row: {
     borderColor: 'grey',
     borderWidth: 1,
     padding: 20,
     backgroundColor: '#fff',
-    //backgroundColor: '#3a5795',
     margin: 5,
   },
   text: {
@@ -37,8 +41,8 @@ const styles = StyleSheet.create({
 
 class Row extends React.Component {
   _onClick = () => {
-    this.props.onClick(this.props.data);
-  };
+    this.props.onClick(this.props.data)
+  }
 
   render() {
     return (
@@ -55,12 +59,12 @@ class Row extends React.Component {
 
 export default class Sf2Resistance extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       isRefreshing: false,
       loaded: 0,
       rowData: [],
-    };
+    }
   }
 
   _onClick = (row) => {
@@ -91,7 +95,7 @@ export default class Sf2Resistance extends Component {
       }).
       catch((err) => {
         console.log("Error loading feed");
-        console.log(err);
+        console.log(err)
       })
   }
 
@@ -100,10 +104,35 @@ export default class Sf2Resistance extends Component {
       return <Row key={ii} data={row} onClick={this._onClick} />
     })
     return (
-      <ScrollView style={styles.scrollView}>
+      <View style={styles.container}>
+      <ScrollView
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={this._onRefresh}
+            tintColor="#ff0000"
+            title="Loading..."
+            titleColor="#00ff00"
+            colors={['#ff0000', '#00ff00', '#0000ff']}
+            progressBackgroundColor="#ffff00"
+          />
+        }>
         {rows}
       </ScrollView>
-    );
+      </View>
+    )
+  }
+
+  _onRefresh = () => {
+    this.setState({isRefreshing: true})
+    this.fetchEvents().then((events) => {
+      this.setState({
+        loaded: this.state.loaded + 10,
+        isRefreshing: false,
+        rowData: events,
+      })
+    })
   }
 }
 
