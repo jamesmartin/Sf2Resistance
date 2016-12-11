@@ -81,6 +81,9 @@ class Row extends React.Component {
           <Text style={styles.text}>
             {this.props.data.name}
           </Text>
+          <Text style={styles.text}>
+            {this.props.data.startsAt}
+          </Text>
         </View>
       </TouchableWithoutFeedback>
     );
@@ -154,6 +157,19 @@ export default class Sf2Resistance extends Component {
     console.log('Clicked: ' + row)
   }
 
+  _parseDate = (dateString) => {
+    const options = {
+      hour : "numeric",
+      minute : "numeric",
+      month : "short",
+      timeZoneName : "short",
+      weekday : "short",
+      year : "numeric",
+    }
+    const date = new Date(dateString)
+    return new Intl.DateTimeFormat('en-US', options).format(date)
+  }
+
   componentDidMount() {
     this.fetchEvents().then((events) => {
       this.setState({
@@ -172,7 +188,14 @@ export default class Sf2Resistance extends Component {
           return []
         } else {
           return (json.events || []).reduce((all, event) => {
-            all.push({name: event.name, imageUrl: event.image_url})
+            all.push(
+              {
+                name: event.name,
+                imageUrl: event.image_url,
+                startsAt: this._parseDate(event.starts_at),
+                cityName: event.city_name
+              }
+            )
             return all
           }, [])
         }
