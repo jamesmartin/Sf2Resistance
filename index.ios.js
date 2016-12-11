@@ -8,9 +8,9 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   Button,
+  ListView,
   StyleSheet,
   Text,
-  ListView,
   View
 } from 'react-native';
 
