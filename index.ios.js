@@ -90,7 +90,7 @@ class HeaderImage extends React.Component {
   render() {
     return (
       <FitImage
-        source={{uri: 'https://placekitten.com/g/400/100'}}
+        source={{uri: this.props.data.imageUrl}}
         originalWidth={400}
         originalHeight={100}
         style={styles.headerImage}
@@ -166,12 +166,11 @@ export default class Sf2Resistance extends Component {
       then((response) => { return response.json() }).
       then((json) => {
         console.log("Loaded events")
-        console.log(json)
         if (!json) {
           return []
         } else {
           return (json.events || []).reduce((all, event) => {
-            all.push({name: event.name})
+            all.push({name: event.name, imageUrl: event.image_url})
             return all
           }, [])
         }
@@ -185,7 +184,10 @@ export default class Sf2Resistance extends Component {
 
   render() {
     const rows = this.state.rowData.map((row, ii) => {
-      return [<HeaderImage/>, <Row key={ii} data={row} onClick={this._onClick} />]
+      return [
+        <HeaderImage data={row} />,
+        <Row key={ii} data={row} onClick={this._onClick} />
+      ]
     })
     return (
       <View style={styles.container}>
