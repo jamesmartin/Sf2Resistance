@@ -37,14 +37,17 @@ export default class Sf2Resistance extends Component {
   }
 
   fetchEvents() {
-    return fetch('https://api.meetup.com/find/events?key=' + Environment.meetupApiKey + '&sign=true').
+    return fetch('https://api.meetup.com/find/events?fields=group_category&key=' + Environment.meetupApiKey + '&sign=true').
       then((response) => { return response.json() }).
       then((json) => {
-        console.log(json)
         console.log("Loaded events")
-        const events = (json || []).map((event) => {
-          return event.name
-        })
+        const events = (json || []).reduce((all, event) => {
+          console.log(event.group.category)
+          if (event.group.category.shortname === "Social") {
+            all.push(event.group.name)
+          }
+          return all
+        }, [])
         return events
       }).
       catch((err) => {
