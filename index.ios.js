@@ -86,6 +86,9 @@ class Row extends React.Component {
             {this.props.data.name}
           </Text>
           <Text style={styles.text}>
+            {this.props.data.cityName}
+          </Text>
+          <Text style={styles.text}>
             {this.props.data.startsAtDate}
           </Text>
           <Text style={styles.text}>
