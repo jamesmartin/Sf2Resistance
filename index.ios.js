@@ -5,6 +5,7 @@
 
 import React, { Component } from 'react'
 import {
+  Alert,
   AppRegistry,
   Button,
   Image,
@@ -96,14 +97,14 @@ class HeaderImage extends React.Component {
   }
 }
 
-const handleSearch = () => {
-  Alert.alert('TODO: Handle search')
-}
-
 class SearchBar extends React.Component {
   constructor(props) {
     super(props)
     this.state = { text: 'San Francisco, CA' }
+  }
+
+  _handleSearch = () => {
+    Alert.alert('TODO: Handle search')
   }
 
   render() {
@@ -115,7 +116,7 @@ class SearchBar extends React.Component {
           value={this.state.text}
         />
         <Button
-          onPress={handleSearch}
+          onPress={this._handleSearch}
           style={{ backgroundColor: colors.skyBlue }}
           title='Search'
           accessibilityLabel='Search for events'
