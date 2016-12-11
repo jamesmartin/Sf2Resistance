@@ -1,7 +1,7 @@
 const localEnv = require('./env.js')
 
 const _Environment = {
-  meetupApiKey: localEnv.meetupApiKey
+  eventsHostUrl: localEnv.eventsHostUrl
 }
 
 module.exports = _Environment

@@ -65,6 +65,8 @@ const styles = StyleSheet.create({
   }
 });
 
+const eventsFeedUrl = Environment.eventsHostUrl + '/events.json'
+
 class Row extends React.Component {
   _onClick = () => {
     this.props.onClick(this.props.data)
@@ -160,21 +162,24 @@ export default class Sf2Resistance extends Component {
   }
 
   fetchEvents() {
-    return fetch('https://api.meetup.com/find/events?fields=group_category&key=' + Environment.meetupApiKey + '&sign=true').
+    return fetch(eventsFeedUrl).
       then((response) => { return response.json() }).
       then((json) => {
         console.log("Loaded events")
-        const events = (json || []).reduce((all, event) => {
-          if (event.group.category.shortname === "Social") {
-            all.push(event.group.name)
-          }
-          return all
-        }, [])
-        return events
+        console.log(json)
+        if (!json) {
+          return []
+        } else {
+          return (json.events || []).reduce((all, event) => {
+            all.push(event.name)
+            return all
+          }, [])
+        }
       }).
       catch((err) => {
         console.log("Error loading feed");
         console.log(err)
+        return []
       })
   }
 
