@@ -22,22 +22,38 @@ import FitImage from 'react-native-fit-image'
 
 const Environment = require('./environment.js')
 
+const colors = {
+  navyBlue: '#1B303F',
+  skyBlue: '#65B9D5',
+  slate: '#B9B7BC',
+  red: '#BC4640',
+  pink: '#C96F6D',
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 22,
   },
   row: {
-    borderColor: 'grey',
+    borderBottomColor: 'grey',
+    borderRightColor: 'grey',
+    borderLeftColor: 'grey',
     borderWidth: 1,
+    borderTopColor: colors.pink,
+    borderTopWidth: 3,
     padding: 20,
     backgroundColor: '#fff',
-    margin: 5,
+    marginLeft: 5,
+    marginRight: 5,
+    marginBottom: 5,
   },
   text: {
     color: 'grey',
   },
-  scrollview: {
+  headerImage: {
+    marginLeft: 5,
+    marginRight: 5,
   },
 });
 
@@ -67,6 +83,7 @@ class HeaderImage extends React.Component {
         source={{uri: 'https://placekitten.com/g/400/100'}}
         originalWidth={400}
         originalHeight={100}
+        style={styles.headerImage}
        />
     )
   }
