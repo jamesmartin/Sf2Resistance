@@ -127,7 +127,7 @@ class TitleBar extends React.Component {
 class SearchBar extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { text: 'San Francisco, CA' }
+    this.state = { text: '' }
   }
 
   _handleSearch = () => {
@@ -140,6 +140,7 @@ class SearchBar extends React.Component {
         <TextInput
           style={{height: 40, width: DeviceDimensions.vw(75), borderColor: 'grey', borderWidth: 1, padding: 5}}
           onChangeText={(text) => this.setState({text})}
+          placeholder='San Francisco, CA'
           value={this.state.text}
         />
         <Button
