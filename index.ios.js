@@ -14,43 +14,61 @@ import {
   View
 } from 'react-native';
 
+const Environment = require('./environment.js')
+
 export default class Sf2Resistance extends Component {
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      reloaded: false,
-      dataSource: ds.cloneWithRows(this.fetchEvents())
+      loadingText: "Loading...",
+      dataSource: ds.cloneWithRows([])
     };
   }
 
-  fetchEvents() {
-    //fetch('https://api.github.com').
-    fetch('http://www.politicaleventscalendar.org/pec/index.cfm').
-    then((response) => {
-      console.log("Hello");
-      console.log(response);
-    }).
-    catch((err) => {
-      console.log("Error loading feed");
-      console.log(err);
+  componentDidMount() {
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.fetchEvents().then((events) => {
+      this.setState({
+        loadingText: "",
+        dataSource: ds.cloneWithRows(events)
+      })
     })
+  }
 
-    return ['Foo', 'Bar', 'Baz', 'Quux'];
+  fetchEvents() {
+    return fetch('https://api.meetup.com/find/events?key=' + Environment.meetupApiKey + '&sign=true').
+      then((response) => { return response.json() }).
+      then((json) => {
+        console.log(json)
+        console.log("Loaded events")
+        const events = (json || []).map((event) => {
+          return event.name
+        })
+        return events
+      }).
+      catch((err) => {
+        console.log("Error loading feed");
+        console.log(err);
+      })
   }
 
   reloadFeed() {
     console.log("Refreshing feed");
-    let newDataSource = ['A', 'B', 'C']
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(newDataSource)
+    this.fetchEvents().then((events) => {
+      this.setState({
+        loadingText: "",
+        dataSource: this.state.dataSource.cloneWithRows(events)
+      })
     })
   }
 
   render() {
     return (
       <View style={styles.container}>
+        <Text>{this.state.loadingText}</Text>
         <ListView
+          enableEmptySections={true} //https://github.com/FaridSafi/react-native-gifted-listview/issues/39
           dataSource={this.state.dataSource}
           renderRow={(rowData) => <Text>{rowData}</Text>}
         />
@@ -63,20 +81,6 @@ export default class Sf2Resistance extends Component {
         />
 
       </View>
-      // show events from http://www.politicaleventscalendar.org/pec/index.cfm
-      /**<View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-      **/
     );
   }
 }
