@@ -50,6 +50,10 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginBottom: 5,
   },
+  headingText: {
+    fontSize: 15,
+    color: 'black',
+  },
   text: {
     color: 'grey',
   },
