@@ -82,11 +82,14 @@ class Row extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={this._onClick} >
         <View style={styles.row}>
-          <Text style={styles.text}>
+          <Text style={styles.headingText}>
             {this.props.data.name}
           </Text>
           <Text style={styles.text}>
-            {this.props.data.startsAt}
+            {this.props.data.startsAtDate}
+          </Text>
+          <Text style={styles.text}>
+            {this.props.data.startsAtTime}
           </Text>
         </View>
       </TouchableWithoutFeedback>
@@ -162,16 +165,20 @@ export default class Sf2Resistance extends Component {
   }
 
   _parseDate = (dateString) => {
-    const options = {
+    const timeOptions = {
       hour : "numeric",
       minute : "numeric",
-      month : "short",
       timeZoneName : "short",
+    }
+    const dateOptions = {
       weekday : "short",
+      month : "short",
       year : "numeric",
     }
-    const date = new Date(dateString)
-    return new Intl.DateTimeFormat('en-US', options).format(date)
+    const parsed = new Date(dateString)
+    const date = new Intl.DateTimeFormat('en-US', dateOptions).format(parsed)
+    const time = new Intl.DateTimeFormat('en-US', timeOptions).format(parsed)
+    return { date: date, time: time }
   }
 
   componentDidMount() {
@@ -192,11 +199,13 @@ export default class Sf2Resistance extends Component {
           return []
         } else {
           return (json.events || []).reduce((all, event) => {
+            const startsAt = this._parseDate(event.starts_at)
             all.push(
               {
                 name: event.name,
                 imageUrl: event.image_url,
-                startsAt: this._parseDate(event.starts_at),
+                startsAtDate: startsAt.date,
+                startsAtTime: startsAt.time,
                 cityName: event.city_name
               }
             )
