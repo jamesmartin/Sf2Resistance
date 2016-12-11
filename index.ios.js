@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  Button,
   StyleSheet,
   Text,
   ListView,
@@ -18,10 +19,32 @@ export default class Sf2Resistance extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows([
-        'Foo', 'Bar', 'Baz', 'Quux'
-      ])
+      reloaded: false,
+      dataSource: ds.cloneWithRows(this.fetchEvents())
     };
+  }
+
+  fetchEvents() {
+    //fetch('https://api.github.com').
+    fetch('http://www.politicaleventscalendar.org/pec/index.cfm').
+    then((response) => {
+      console.log("Hello");
+      console.log(response);
+    }).
+    catch((err) => {
+      console.log("Error loading feed");
+      console.log(err);
+    })
+
+    return ['Foo', 'Bar', 'Baz', 'Quux'];
+  }
+
+  reloadFeed() {
+    console.log("Refreshing feed");
+    let newDataSource = ['A', 'B', 'C']
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(newDataSource)
+    })
   }
 
   render() {
@@ -31,9 +54,16 @@ export default class Sf2Resistance extends Component {
           dataSource={this.state.dataSource}
           renderRow={(rowData) => <Text>{rowData}</Text>}
         />
+
+        <Button
+          onPress={this.reloadFeed.bind(this)}
+          title="Refresh"
+          color="#65B9D5"
+          accessibilityLabel="Tap to refresh the feed"
+        />
+
       </View>
       // show events from http://www.politicaleventscalendar.org/pec/index.cfm
-      
       /**<View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native!
