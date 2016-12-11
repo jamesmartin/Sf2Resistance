@@ -7,19 +7,20 @@ import React, { Component } from 'react'
 import {
   AppRegistry,
   Button,
-  Dimensions,
   Image,
   ListView,
   RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableWithoutFeedback,
   View
 } from 'react-native';
 
 import FitImage from 'react-native-fit-image'
 
+const DeviceDimensions = require('./deviceDimensions.js')
 const Environment = require('./environment.js')
 
 const colors = {
@@ -55,6 +56,12 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
   },
+  searchView: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    margin: 5,
+  }
 });
 
 class Row extends React.Component {
@@ -85,6 +92,35 @@ class HeaderImage extends React.Component {
         originalHeight={100}
         style={styles.headerImage}
        />
+    )
+  }
+}
+
+const handleSearch = () => {
+  Alert.alert('TODO: Handle search')
+}
+
+class SearchBar extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { text: 'San Francisco, CA' }
+  }
+
+  render() {
+    return(
+      <View style={styles.searchView}>
+        <TextInput
+          style={{height: 40, width: DeviceDimensions.vw(75), borderColor: 'grey', borderWidth: 1, padding: 5}}
+          onChangeText={(text) => this.setState({text})}
+          value={this.state.text}
+        />
+        <Button
+          onPress={handleSearch}
+          style={{ backgroundColor: colors.skyBlue }}
+          title='Search'
+          accessibilityLabel='Search for events'
+        />
+      </View>
     )
   }
 }
@@ -137,6 +173,7 @@ export default class Sf2Resistance extends Component {
     })
     return (
       <View style={styles.container}>
+        <SearchBar/>
         <ScrollView
           style={styles.scrollView}
           refreshControl={
