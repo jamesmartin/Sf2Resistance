@@ -3,10 +3,12 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   AppRegistry,
   Button,
+  Dimensions,
+  Image,
   ListView,
   RefreshControl,
   ScrollView,
@@ -15,6 +17,8 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native';
+
+import FitImage from 'react-native-fit-image'
 
 const Environment = require('./environment.js')
 
@@ -31,12 +35,10 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   text: {
-    alignSelf: 'center',
     color: 'grey',
   },
   scrollview: {
-    flex: 1,
-  }
+  },
 });
 
 class Row extends React.Component {
@@ -46,7 +48,7 @@ class Row extends React.Component {
 
   render() {
     return (
-     <TouchableWithoutFeedback onPress={this._onClick} >
+      <TouchableWithoutFeedback onPress={this._onClick} >
         <View style={styles.row}>
           <Text style={styles.text}>
             {this.props.data}
@@ -54,6 +56,19 @@ class Row extends React.Component {
         </View>
       </TouchableWithoutFeedback>
     );
+  }
+}
+
+class HeaderImage extends React.Component {
+
+  render() {
+    return (
+      <FitImage
+        source={{uri: 'https://placekitten.com/g/400/100'}}
+        originalWidth={400}
+        originalHeight={100}
+       />
+    )
   }
 }
 
@@ -101,22 +116,22 @@ export default class Sf2Resistance extends Component {
 
   render() {
     const rows = this.state.rowData.map((row, ii) => {
-      return <Row key={ii} data={row} onClick={this._onClick} />
+      return [<HeaderImage/>, <Row key={ii} data={row} onClick={this._onClick} />]
     })
     return (
       <View style={styles.container}>
-      <ScrollView
-        style={styles.scrollView}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.isRefreshing}
-            onRefresh={this._onRefresh}
-            tintColor="#ff0000"
-            title="Loading..."
-            titleColor="#00ff00"
-            colors={['#ff0000', '#00ff00', '#0000ff']}
-            progressBackgroundColor="#ffff00"
-          />
+        <ScrollView
+          style={styles.scrollView}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.isRefreshing}
+              onRefresh={this._onRefresh}
+              tintColor="#ff0000"
+              title="Loading..."
+              titleColor="#00ff00"
+              colors={['#ff0000', '#00ff00', '#0000ff']}
+              progressBackgroundColor="#ffff00"
+            />
         }>
         {rows}
       </ScrollView>

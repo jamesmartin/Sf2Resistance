@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "react": "15.4.1",
-    "react-native": "0.39.1"
+    "react-native": "0.39.1",
+    "react-native-fit-image": "^1.4.6"
   },
   "devDependencies": {
     "babel-jest": "17.0.2",
