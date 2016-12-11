@@ -97,6 +97,16 @@ class HeaderImage extends React.Component {
   }
 }
 
+class TitleBar extends React.Component {
+  render() {
+    return(
+      <Image
+        source={require('./images/find-the-fight-logo-text.png')}
+      />
+    )
+  }
+}
+
 class SearchBar extends React.Component {
   constructor(props) {
     super(props)
@@ -174,6 +184,7 @@ export default class Sf2Resistance extends Component {
     })
     return (
       <View style={styles.container}>
+        <TitleBar/>
         <SearchBar/>
         <ScrollView
           style={styles.scrollView}
