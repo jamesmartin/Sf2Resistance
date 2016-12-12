@@ -50,6 +50,10 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginBottom: 5,
   },
+  titleText: {
+    fontSize: 40,
+    textAlign: 'center',
+  },
   headingText: {
     fontSize: 15,
     color: 'black',
@@ -117,9 +121,7 @@ class HeaderImage extends React.Component {
 class TitleBar extends React.Component {
   render() {
     return(
-      <Image
-        source={require('./images/find-the-fight-logo-text.png')}
-      />
+      <Text style={styles.titleText}>Find The Fight</Text>
     )
   }
 }
